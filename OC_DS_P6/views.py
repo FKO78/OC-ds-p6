@@ -4,9 +4,8 @@ from flask import Flask, request #, render_template, url_for,
 from .utils import *
 from pickle import Unpickler
 from json import dumps
-#import sys
-
-#sys.setrecursionlimit(20000)
+from nltk.corpus import stopwords, wordnet
+from nltk.stem import PorterStemmer
 
 app = Flask(__name__)
 

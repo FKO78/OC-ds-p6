@@ -1,20 +1,7 @@
-﻿import datetime
-import numpy as np
-
-def conv_html(col):
-    """
-    Fonction de convertion de html en chaine standard
-    """
-
-    html = BeautifulSoup(col, 'html.parser')
-    # Delete url strings
-    for t in html.find_all('a'):
-        t.replace_with('')
-    # Delete code blocks
-    for t in html.find_all('pre'):
-        t.replace_with('')
-
-    return html.get_text(' ', strip=True)
+﻿import pandas as pd
+#import nltk
+#nltk.download('stopwords')
+#nltk.download('wordnet')
 
 def clean_field(col, tknzr, sw, lmtzr, stmr):
     """
