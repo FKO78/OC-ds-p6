@@ -14,13 +14,17 @@ app = Flask(__name__)
 app.config.from_object('config')
 # To get one variable, tape app.config['MY_VARIABLE']
 
+REGEX = app.config['REGEX']
+EXTRA_SW = app.config['EXTRA_SW']
+
+# Stopwords nltk
+std_sw = set(nltk.corpus.stopwords.words('english'))
 
 with open(app.config['SOURCE_FILE'], 'rb') as file:
     unpickler = pickle.Unpickler(file)
-    sclr = unpickler.load()
     tfidf = unpickler.load()
-    mod = unpickler.load()
-    lbl = unpickler.load()
+    model = unpickler.load()
+    label = unpickler.load()
 
 @app.route('/')
 def index():
@@ -32,48 +36,26 @@ def tag_question(title, body):
     Prediction function of stackexchange tags from a query passed as parameter
     """
 
-    RATIO = 1/3
-    REGEX = '[a-z0-9]+[#-]?[a-z0-9]*'
-
-    # Stopwords nltk
-    std_sw = set(nltk.corpus.stopwords.words('english'))
-
-    # Extra stopwords = radicaux qui ne me semblent pas discriminants
-    extra_sw = ('use', 'get', 'like', 'way', 'creat', 'would', 'want', 'need',\
-                'know', 'could', 'x', 'xx', 'xyz', 'aa', 'xxx', 'z', 'yyyi', 'wont',\
-                'aaa', 'aaaaaa', 'aabbc', 'aandb', 'aarrggbb')
-
-
     tokenizer = nltk.RegexpTokenizer(REGEX)
     lemmatizer = WordNetLemmatizer()
     stemmer = PorterStemmer()
 
-    with open('OC_DS_P6_prod.pkl', 'rb') as file:
-        unpickler = pickle.Unpickler(file)
-        sclr = unpickler.load()
-        tfidf = unpickler.load()
-        mod = unpickler.load()
-        lbl = unpickler.load()
-
     title = clean_field(title, tknzr=tokenizer, sw=std_sw, \
                         lmtzr=lemmatizer, stmr=stemmer)
     title = ' '.join([w for w in title.split() \
-                       if w not in extra_sw and not w.isdigit()])
+                       if w not in EXTRA_SW and not w.isdigit()])
 
     body = clean_field(body, tknzr=tokenizer, sw=std_sw, \
                        lmtzr=lemmatizer, stmr=stemmer)
     body = ' '.join([w for w in body.split() \
-                      if w not in extra_sw and not w.isdigit()])
+                      if w not in EXTRA_SW and not w.isdigit()])
 
-    tfidf_q = tfidf['Title'].transform([title])
-    cols = tfidf['Title'].get_feature_names()
-    tfidf_q = pd.DataFrame(tfidf_q.todense().tolist(), columns=cols)
+    tfidf_t = tfidf['Title'].transform([title])
+    features_t = tfidf['Title'].get_feature_names()
 
     tfidf_b = tfidf['Body'].transform([body])
-    cols = tfidf['Body'].get_feature_names()
-    tfidf_b = pd.DataFrame(tfidf_b.todense().tolist(), columns=cols)
+    features_b = tfidf['Body'].get_feature_names()
 
-    X = (RATIO * tfidf_q).add((1 - RATIO) * tfidf_b, fill_value=0).fillna(0)
+    tfidf_full = hstack([tfidf_t, tfidf_b])
 
-    return '<{}>'.format('><'.\
-                         join(lbl.inverse_transform(mod.predict(sclr.transform(X)))))
+    return get_tags(label.classes_, model.predict(tfidf_full)[0])

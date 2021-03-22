@@ -9,4 +9,10 @@
 
 SOURCE_FILE = 'OC_DS_P6_prod.pkl'
 
-RATIO = 1/3
+REGEX = '[a-z0-9]+[#-]?\+{0,2}[a-z0-9]*'
+
+# Extra stopwords = radicaux qui ne me semblent pas discriminants
+EXTRA_SW = ('use', 'get', 'like', 'way', 'creat', 'would', 'want', 'need',\
+            'know', 'could', 'x', 'xx', 'xyz', 'aa', 'xxx', 'z', 'yyyi', 'wont',\
+            'aaa', 'aaaaaa', 'aabbc', 'aandb', 'aarrggbb', 'without', 'behind', \
+            'within')
