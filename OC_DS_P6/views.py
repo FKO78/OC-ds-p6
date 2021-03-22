@@ -6,6 +6,7 @@ from pickle import Unpickler
 from json import dumps
 from nltk.corpus import stopwords, wordnet
 from nltk.stem import PorterStemmer
+from scipy.sparse import hstack
 
 app = Flask(__name__)
 
@@ -17,7 +18,7 @@ REGEX = app.config['REGEX']
 EXTRA_SW = app.config['EXTRA_SW']
 
 # Stopwords nltk
-std_sw = set(nltk.corpus.stopwords.words('english'))
+std_sw = set(stopwords.words('english'))
 
 with open(app.config['SOURCE_FILE'], 'rb') as file:
     unpickler = pickle.Unpickler(file)
@@ -35,7 +36,7 @@ def tag_question(title, body):
     Prediction function of stackexchange tags from a query passed as parameter
     """
 
-    tokenizer = nltk.RegexpTokenizer(REGEX)
+    tokenizer = RegexpTokenizer(REGEX)
     lemmatizer = WordNetLemmatizer()
     stemmer = PorterStemmer()
 

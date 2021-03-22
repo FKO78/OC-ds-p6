@@ -1,7 +1,4 @@
 ﻿import pandas as pd
-#import nltk
-#nltk.download('stopwords')
-#nltk.download('wordnet')
 
 def clean_field(col, tknzr, sw, lmtzr, stmr):
     """
