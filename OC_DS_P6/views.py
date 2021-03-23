@@ -3,6 +3,7 @@ import pandas as pd
 import datetime
 from pickle import Unpickler
 from json import dumps
+from nltk.corpus import wordnet, stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk.tokenize import RegexpTokenizer
 from scipy.sparse import hstack
@@ -17,7 +18,7 @@ REGEX = app.config['REGEX']
 EXTRA_SW = app.config['EXTRA_SW']
 
 # Stopwords nltk
-std_sw = set(nltk.stopwords.words('english'))
+std_sw = set(stopwords.words('english'))
 
 with open(app.config['SOURCE_FILE'], 'rb') as file:
     unpickler = pickle.Unpickler(file)
