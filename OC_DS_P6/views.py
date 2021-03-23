@@ -30,6 +30,8 @@ def tag_question():
     """
     Prediction function of stackexchange tags from a query passed as parameter
     """
+    titre = ""
+    corps = ""
 
     if len(request.args) != 2:
         result = "Veuillez vérifier les paramètres passés"
@@ -64,6 +66,8 @@ def tag_question():
         features_b = tfidf['Body'].get_feature_names()
 
         tfidf_full = hstack([tfidf_t, tfidf_b])
+
+        print(len(label.classes_), tfidf_full.shape)
 
         result = get_tags(label.classes_, model.predict(tfidf_full)[0])
 

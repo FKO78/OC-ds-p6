@@ -38,7 +38,6 @@ def get_tags(features, pred):
     """
 
     temp = set()
-    res = ''
 
     for i in range(len(pred)):
         if pred[i] == 1:
