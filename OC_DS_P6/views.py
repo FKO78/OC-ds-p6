@@ -37,6 +37,8 @@ def tag_question():
     Prediction function of stackexchange tags from a query passed as parameter
     """
 
+    res = ''
+
     if len(request.args) != 2:
         result = "Veuillez vérifier les paramètres passés"
     else:
@@ -65,5 +67,6 @@ def tag_question():
 
     tfidf_full = hstack([tfidf_t, tfidf_b])
 
-    return dumps({'_Tags': {get_tags(label.classes_, \
-                                     model.predict(tfidf_full)[0])}})
+    res= get_tags(label.classes_, model.predict(tfidf_full)[0])
+
+    return dumps({'_Tags': {res}})
