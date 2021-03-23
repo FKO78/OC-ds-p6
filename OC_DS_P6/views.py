@@ -4,6 +4,9 @@ from flask import Flask, request #, render_template, url_for,
 from .utils import *
 from pickle import Unpickler
 from json import dumps
+import nltk
+nltk.download('stopwords')
+nltk.download('wordnet')
 from nltk.corpus import stopwords, wordnet
 from nltk.stem import PorterStemmer
 from scipy.sparse import hstack
