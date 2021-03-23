@@ -67,6 +67,6 @@ def tag_question():
 
         result = get_tags(label.classes_, model.predict(tfidf_full)[0])
 
-    return dumps({'_In': {'Titre' : titre1[:30] + '...',
-                          'Detail' : corps1[:30] + '...'},
+    return dumps({'_In': {'Titre' : title[:30] + '...',
+                          'Detail' : body[:30] + '...'},
                   '_Out': {'Tags' : result}})
