@@ -21,12 +21,6 @@ EXTRA_SW = app.config['EXTRA_SW']
 # Stopwords nltk
 std_sw = set(stopwords.words('english'))
 
-with open(app.config['SOURCE_FILE'], 'rb') as file:
-    unpickler = pickle.Unpickler(file)
-    tfidf = unpickler.load()
-    model = unpickler.load()
-    label = unpickler.load()
-
 @app.route('/')
 def index():
    return "Générateur de tags StackExchange"
@@ -42,6 +36,12 @@ def tag_question():
     else:
         titre = request.args.get('title')
         corps = request.args.get('body')
+
+        with open(app.config['SOURCE_FILE'], 'rb') as file:
+            unpickler = pickle.Unpickler(file)
+            tfidf = unpickler.load()
+            model = unpickler.load()
+            label = unpickler.load()
 
         tokenizer = RegexpTokenizer(REGEX)
         lemmatizer = WordNetLemmatizer()
@@ -67,6 +67,6 @@ def tag_question():
 
         result = get_tags(label.classes_, model.predict(tfidf_full)[0])
 
-    return dumps({'_In': {'Titre' : title[:30] + '...',
-                          'Detail' : body[:30] + '...'},
+    return dumps({'_In': {'Titre' : titre[:30] + '...',
+                          'Detail' : corps[:30] + '...'},
                   '_Out': {'Tags' : result}})
