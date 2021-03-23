@@ -17,7 +17,7 @@ REGEX = app.config['REGEX']
 EXTRA_SW = app.config['EXTRA_SW']
 
 # Stopwords nltk
-std_sw = set(stopwords.words('english'))
+std_sw = set(nltk.stopwords.words('english'))
 
 with open(app.config['SOURCE_FILE'], 'rb') as file:
     unpickler = pickle.Unpickler(file)
