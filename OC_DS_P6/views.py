@@ -69,4 +69,4 @@ def tag_question():
 
     res = get_tags(label.classes_, model.predict(tfidf_full)[0])
 
-    return {'_Tags': {res}}
+    return dumps({'_Tags': {'toto'}}
