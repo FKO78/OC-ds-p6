@@ -1,3 +1,5 @@
+from nltk import pos_tag
+
 def clean_field(col, tknzr, sw, lmtzr, stmr):
     """
     Fonction de tokenisation du contenu dont regex \w+,
