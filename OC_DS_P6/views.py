@@ -38,6 +38,7 @@ def tag_question():
     """
     titre = ""
     corps = ""
+    result = ""
 
     if len(request.args) != 2:
         result = "Veuillez vérifier les paramètres passés"
