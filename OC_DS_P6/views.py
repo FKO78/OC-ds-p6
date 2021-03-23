@@ -42,19 +42,19 @@ def tag_question():
     if len(request.args) != 2:
         result = "Veuillez vérifier les paramètres passés"
     else:
-        title = request.args.get('title')
-        body = request.args.get('body')
+        titre = request.args.get('title')
+        corps = request.args.get('body')
 
     tokenizer = RegexpTokenizer(REGEX)
     lemmatizer = WordNetLemmatizer()
     stemmer = PorterStemmer()
 
-    title = clean_field(title, tknzr=tokenizer, sw=std_sw, \
+    title = clean_field(titre, tknzr=tokenizer, sw=std_sw, \
                         lmtzr=lemmatizer, stmr=stemmer)
     title = ' '.join([w for w in title.split() \
                        if w not in EXTRA_SW and not w.isdigit()])
 
-    body = clean_field(body, tknzr=tokenizer, sw=std_sw, \
+    body = clean_field(corps, tknzr=tokenizer, sw=std_sw, \
                        lmtzr=lemmatizer, stmr=stemmer)
     body = ' '.join([w for w in body.split() \
                       if w not in EXTRA_SW and not w.isdigit()])
