@@ -1,6 +1,5 @@
 ﻿import os
 from .views import app
-from .utils import *
 
 #from . import models
 
