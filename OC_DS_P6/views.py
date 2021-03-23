@@ -1,7 +1,7 @@
-﻿from flask import Flask
+﻿from flask import Flask, request
 import pandas as pd
 import datetime
-import pickle 
+import pickle
 from json import dumps
 from nltk.corpus import wordnet, stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
@@ -31,10 +31,16 @@ def index():
    return "Générateur de tags StackExchange"
 
 @app.route('/tags/')
-def tag_question(title, body):
+def tag_question():
     """
     Prediction function of stackexchange tags from a query passed as parameter
     """
+
+    if len(request.args) != 2:
+        result = "Veuillez vérifier les paramètres passés"
+    else:
+        title = request.args.get('title')
+        body = request.args.get('body')
 
     tokenizer = RegexpTokenizer(REGEX)
     lemmatizer = WordNetLemmatizer()
