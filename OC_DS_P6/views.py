@@ -1,7 +1,7 @@
 ﻿from flask import Flask
 import pandas as pd
 import datetime
-from pickle import Unpickler
+import pickle 
 from json import dumps
 from nltk.corpus import wordnet, stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
