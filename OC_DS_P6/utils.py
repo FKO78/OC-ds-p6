@@ -40,7 +40,7 @@ def get_tags(features, pred):
     temp = set()
 
     for i in range(len(pred)):
-        if pred[i] == "1":
+        if pred[i] == 1:
             temp.update(features[i])
 
     return '<{}>'.format('><'.join(sorted(temp)))
