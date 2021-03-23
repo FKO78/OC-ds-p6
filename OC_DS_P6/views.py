@@ -67,7 +67,7 @@ def tag_question():
 
         tfidf_full = hstack([tfidf_t, tfidf_b])
 
-        result = get_tags(label.classes_, model.predict(tfidf_full)[0])
+        result = sum(get_tags(label.classes_, model.predict(tfidf_full)[0]))
         #result = len(model.predict(tfidf_full)[0])
 
     return dumps({'_In': {'Titre' : titre[:30] + '...',
