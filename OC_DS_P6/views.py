@@ -72,4 +72,4 @@ def tag_question():
 
     return dumps({'_In': {'Titre' : titre[:30] + '...',
                           'Detail' : corps[:30] + '...'},
-                  '_Out': {'Tags' : result}})
+                  '_Out': {'Tags' : 'toto'}})
