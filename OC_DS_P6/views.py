@@ -37,36 +37,34 @@ def tag_question():
     Prediction function of stackexchange tags from a query passed as parameter
     """
 
-    res = ''
-
     if len(request.args) != 2:
         result = "Veuillez vérifier les paramètres passés"
     else:
         titre = request.args.get('title')
         corps = request.args.get('body')
 
-    tokenizer = RegexpTokenizer(REGEX)
-    lemmatizer = WordNetLemmatizer()
-    stemmer = PorterStemmer()
+        tokenizer = RegexpTokenizer(REGEX)
+        lemmatizer = WordNetLemmatizer()
+        stemmer = PorterStemmer()
 
-    title = clean_field(titre, tknzr=tokenizer, sw=std_sw, \
-                        lmtzr=lemmatizer, stmr=stemmer)
-    title = ' '.join([w for w in title.split() \
-                       if w not in EXTRA_SW and not w.isdigit()])
+        title = clean_field(titre, tknzr=tokenizer, sw=std_sw, \
+                            lmtzr=lemmatizer, stmr=stemmer)
+        title = ' '.join([w for w in title.split() \
+                           if w not in EXTRA_SW and not w.isdigit()])
 
-    body = clean_field(corps, tknzr=tokenizer, sw=std_sw, \
-                       lmtzr=lemmatizer, stmr=stemmer)
-    body = ' '.join([w for w in body.split() \
-                      if w not in EXTRA_SW and not w.isdigit()])
+        body = clean_field(corps, tknzr=tokenizer, sw=std_sw, \
+                           lmtzr=lemmatizer, stmr=stemmer)
+        body = ' '.join([w for w in body.split() \
+                          if w not in EXTRA_SW and not w.isdigit()])
 
-    tfidf_t = tfidf['Title'].transform([title])
-    features_t = tfidf['Title'].get_feature_names()
+        tfidf_t = tfidf['Title'].transform([title])
+        features_t = tfidf['Title'].get_feature_names()
 
-    tfidf_b = tfidf['Body'].transform([body])
-    features_b = tfidf['Body'].get_feature_names()
+        tfidf_b = tfidf['Body'].transform([body])
+        features_b = tfidf['Body'].get_feature_names()
 
-    tfidf_full = hstack([tfidf_t, tfidf_b])
+        tfidf_full = hstack([tfidf_t, tfidf_b])
 
-    res = get_tags(label.classes_, model.predict(tfidf_full)[0])
+        result = get_tags(label.classes_, model.predict(tfidf_full)[0])
 
-    return dumps({'_Tags': {'toto'}})
+    return dumps({'_Tags': {result}})
