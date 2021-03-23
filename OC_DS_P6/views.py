@@ -21,6 +21,12 @@ EXTRA_SW = app.config['EXTRA_SW']
 # Stopwords nltk
 std_sw = set(stopwords.words('english'))
 
+with open(app.config['SOURCE_FILE'], 'rb') as file:
+    unpickler = pickle.Unpickler(file)
+    tfidf = unpickler.load()
+    model = unpickler.load()
+    label = unpickler.load()
+
 @app.route('/')
 def index():
    return "Générateur de tags StackExchange"
@@ -39,12 +45,6 @@ def tag_question():
         titre = request.args.get('title')
         corps = request.args.get('body')
 
-        with open(app.config['SOURCE_FILE'], 'rb') as file:
-            unpickler = pickle.Unpickler(file)
-            tfidf = unpickler.load()
-            model = unpickler.load()
-            label = unpickler.load()
-
         tokenizer = RegexpTokenizer(REGEX)
         lemmatizer = WordNetLemmatizer()
         stemmer = PorterStemmer()
@@ -60,15 +60,15 @@ def tag_question():
                           if w not in EXTRA_SW and not w.isdigit()])
 
         tfidf_t = tfidf['Title'].transform([title])
-        features_t = tfidf['Title'].get_feature_names()
+        #features_t = tfidf['Title'].get_feature_names()
 
         tfidf_b = tfidf['Body'].transform([body])
-        features_b = tfidf['Body'].get_feature_names()
+        #features_b = tfidf['Body'].get_feature_names()
 
         tfidf_full = hstack([tfidf_t, tfidf_b])
 
         result = get_tags(label.classes_, model.predict(tfidf_full)[0])
 
-    return dumps({'_In': {'Titre' : len(label.classes_), #titre[:30] + '...',
-                          'Detail' : tfidf_full.shape}, #corps[:30] + '...'},
+    return dumps({'_In': {'Titre' : titre[:30] + '...',
+                          'Detail' : len(model.predict(tfidf_full)[0])}, #corps[:30] + '...'},
                   '_Out': {'Tags' : result}})
