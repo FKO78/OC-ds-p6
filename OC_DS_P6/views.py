@@ -1,17 +1,4 @@
-﻿import pandas as pd
-import datetime
-from flask import Flask, request #, render_template, url_for,
-from .utils import *
-from pickle import Unpickler
-from json import dumps
-import nltk
-nltk.download('stopwords')
-nltk.download('wordnet')
-from nltk.corpus import stopwords, wordnet
-from nltk.stem import PorterStemmer
-from scipy.sparse import hstack
-
-app = Flask(__name__)
+﻿app = Flask(__name__)
 
 # Config options - Make sure you created a 'config.py' file.
 app.config.from_object('config')
