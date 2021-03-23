@@ -1,4 +1,13 @@
-﻿app = Flask(__name__)
+﻿from flask import Flask
+import pandas as pd
+import datetime
+from pickle import Unpickler
+from json import dumps
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.tokenize import RegexpTokenizer
+from scipy.sparse import hstack
+
+app = Flask(__name__)
 
 # Config options - Make sure you created a 'config.py' file.
 app.config.from_object('config')
