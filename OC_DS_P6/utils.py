@@ -1,4 +1,5 @@
 from nltk import pos_tag
+from nltk.corpus import wordnet
 
 def clean_field(col, tknzr, sw, lmtzr, stmr):
     """

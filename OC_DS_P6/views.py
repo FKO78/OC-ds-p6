@@ -3,11 +3,11 @@ import pandas as pd
 import datetime
 import pickle
 from json import dumps
-from nltk.corpus import wordnet, stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk.tokenize import RegexpTokenizer
 from scipy.sparse import hstack
 from .utils import *
+from nltk.corpus import stopwords
 
 app = Flask(__name__)
 
