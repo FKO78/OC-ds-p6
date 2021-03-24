@@ -43,4 +43,4 @@ def get_tags(features, pred):
         if pred[i] == 1:
             temp.update([features[i]])
 
-    return ' '.join(sorted(temp))
+    return '<' + '><'.join(sorted(temp)) + '>'

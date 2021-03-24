@@ -65,7 +65,7 @@ def resultat():
 
   result = get_tags(label.classes_, model.predict(tfidf_full)[0])
 
-  return render_template("resultat.html", title=title, body=body, tags=result)
+  return render_template("resultat.html", title=titre, body=corps, tags=result)
 
 @app.route('/next/')
 def tag():
