@@ -28,10 +28,6 @@ with open(app.config['SOURCE_FILE'], 'rb') as file:
     label = unpickler.load()
 
 @app.route('/')
-def index():
-   return "Générateur de tags StackExchange"
-
-@app.route('/query/')
 def question():
     return render_template('index.html')
 
@@ -67,7 +63,7 @@ def resultat():
 
   return render_template("resultat.html", title=titre, body=corps, tags=result)
 
-@app.route('/next/')
+@app.route('/old/')
 def tag():
     """
     Prediction function of stackexchange tags from a query passed as parameter
