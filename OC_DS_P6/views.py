@@ -38,9 +38,34 @@ def question():
 @app.route('/resultat',methods = ['POST'])
 def resultat():
   result = request.form
-  n = result['title']
-  p = result['body']
-  return render_template("resultat.html", title=n, body=p)
+  titre = result['title']
+  corps = result['body']
+
+  tokenizer = RegexpTokenizer(REGEX)
+  lemmatizer = WordNetLemmatizer()
+  stemmer = PorterStemmer()
+
+  title = clean_field(titre, tknzr=tokenizer, sw=std_sw, \
+                      lmtzr=lemmatizer, stmr=stemmer)
+  title = ' '.join([w for w in title.split() \
+                     if w not in EXTRA_SW and not w.isdigit()])
+
+  body = clean_field(corps, tknzr=tokenizer, sw=std_sw, \
+                     lmtzr=lemmatizer, stmr=stemmer)
+  body = ' '.join([w for w in body.split() \
+                    if w not in EXTRA_SW and not w.isdigit()])
+
+  tfidf_t = tfidf['Title'].transform([title])
+  #features_t = tfidf['Title'].get_feature_names()
+
+  tfidf_b = tfidf['Body'].transform([body])
+  #features_b = tfidf['Body'].get_feature_names()
+
+  tfidf_full = hstack([tfidf_t, tfidf_b])
+
+  result = get_tags(label.classes_, model.predict(tfidf_full)[0])
+
+  return render_template("resultat.html", title=title, body=body, tags=result)
 
 @app.route('/next/')
 def tag():
