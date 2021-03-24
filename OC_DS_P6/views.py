@@ -1,4 +1,4 @@
-﻿from flask import Flask, request
+﻿from flask import Flask, request, render_template
 import pandas as pd
 import datetime
 import pickle
@@ -31,8 +31,19 @@ with open(app.config['SOURCE_FILE'], 'rb') as file:
 def index():
    return "Générateur de tags StackExchange"
 
-@app.route('/tags/')
-def tag_question():
+@app.route('/query/')
+def question():
+    return render_template('index.html')
+
+@app.route('/resultat',methods = ['POST'])
+def resultat():
+  result = request.form
+  n = result['title']
+  p = result['body']
+  return render_template("resultat.html", title=n, body=p)
+
+@app.route('/next/')
+def tag():
     """
     Prediction function of stackexchange tags from a query passed as parameter
     """
